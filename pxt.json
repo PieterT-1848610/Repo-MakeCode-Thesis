@@ -7,11 +7,14 @@
         "microphone": "*",
         "jacdac": "github:microsoft/pxt-jacdac#v1.8.41",
         "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.5",
-        "jacdac-distance": "github:microsoft/pxt-jacdac/distance#v1.8.13"
+        "jacdac-distance": "github:microsoft/pxt-jacdac/distance#v1.8.13",
+        "jacdac-led": "github:microsoft/pxt-jacdac/led#v1.8.13",
+        "jacdac-led-server": "github:microsoft/pxt-jacdac/led-server#v1.8.13"
     },
     "files": [
         "main.ts",
-        "README.md"
+        "README.md",
+        "ledRGB.ts"
     ],
     "testFiles": [
         "test.ts"
