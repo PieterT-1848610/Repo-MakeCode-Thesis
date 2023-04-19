@@ -1,0 +1,27 @@
+{
+    "name": "BigRepoThesis",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*",
+        "jacdac": "github:microsoft/pxt-jacdac#v1.8.41",
+        "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.5",
+        "jacdac-distance": "github:microsoft/pxt-jacdac/distance#v1.8.13"
+    },
+    "files": [
+        "main.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "5.0.12",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
