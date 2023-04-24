@@ -42,11 +42,15 @@ namespace ServiceImpl{
         options: jacdac.LedServerOptions;
         rgbDevice: LedRGB;
         instanceName: string;
+
         constructor(redPin: AnalogPin, greenPin: AnalogPin, bluePin: AnalogPin, instanceName: string ,options?: jacdac.LedServerOptions){
             this.rgbDevice = new LedRGB(redPin, greenPin, bluePin);
             this.instanceName = instanceName;
         }
 
+        public setInstanceName(instanceName: string) {
+            this.instanceName = instanceName;
+        }
 
         public startServer() {
             return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
