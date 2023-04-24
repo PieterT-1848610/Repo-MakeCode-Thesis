@@ -3,7 +3,7 @@ namespace ServiceImpl{
         private serviceClass = jacdac.SRV_DISTANCE;
         private packFormat = jacdac.DistanceRegPack.Distance;
         instanceName: string
-        options: jacdac.SimpleSensorServerOptions;
+        options: jacdac.SimpleSensorServerOptions = {};
         inputFunc: () => number;
 
         constructor(inputFunc: () => number, instanceName: string, options ?: jacdac.SimpleSensorServerOptions) {
@@ -47,7 +47,7 @@ namespace ServiceImpl{
     } 
 
     export class RGBServer{
-        options: jacdac.LedServerOptions;
+        options: jacdac.LedServerOptions = {};
         rgbDevice: LedRGB;
         instanceName: string;
 
@@ -82,7 +82,7 @@ namespace ServiceImpl{
     }  
 
     export class CharLCDScreen{
-        options: jacdac.ServerOptions;
+        options: jacdac.ServerOptions = {};
         instanceName: string;
 
         constructor(instanceName: string, options?: jacdac.ServerOptions){
