@@ -2,14 +2,17 @@ namespace ServiceImpl{
     export class DepthServer {
         private serviceClass = jacdac.SRV_DISTANCE;
         private packFormat = jacdac.DistanceRegPack.Distance;
-        options: jacdac.SimpleSensorServerOptions;
+        instanceName: string
+        options: jacdac.SimpleSensorServerOptions = {};
         inputFunc: () => number;
 
-        constructor(inputFunc: () => number, options ?: jacdac.SimpleSensorServerOptions) {
+        constructor(inputFunc: () => number, instanceName: string, options ?: jacdac.SimpleSensorServerOptions) {
             this.inputFunc = inputFunc;
+            this.instanceName = instanceName
             if (options) {
                 this.options = options;
             }
+            this.options.instanceName = instanceName;
         }
 
         public setOptions(options: jacdac.SimpleSensorServerOptions) {
@@ -28,6 +31,11 @@ namespace ServiceImpl{
             this.inputFunc = inputFunc;
         }
 
+        public setInstanceName(instanceName: string){
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
         public startServer(): jacdac.SimpleSensorServer {
             return new jacdac.SimpleSensorServer(
                 this.serviceClass,
@@ -39,25 +47,66 @@ namespace ServiceImpl{
     } 
 
     export class RGBServer{
-        options: jacdac.LedServerOptions;
+        options: jacdac.LedServerOptions = {};
         rgbDevice: LedRGB;
         instanceName: string;
 
         constructor(redPin: AnalogPin, greenPin: AnalogPin, bluePin: AnalogPin, instanceName: string ,options?: jacdac.LedServerOptions){
             this.rgbDevice = new LedRGB(redPin, greenPin, bluePin);
             this.instanceName = instanceName;
+            if(options){
+                this.options = options;
+            }
+            this.options.instanceName = instanceName;
         }
 
         public setInstanceName(instanceName: string) {
             this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+
         }
 
         public startServer() {
-            return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
-                this.rgbDevice.setChange(p[0], p[1], p[2]);
-            }, {
-                "instanceName": this.instanceName
-            })
+            if(this.options){
+                return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
+                    this.rgbDevice.setChange(p[0], p[1], p[2]);
+                }, this.options);
+            }else{
+                return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
+                    this.rgbDevice.setChange(p[0], p[1], p[2]);
+                }, {
+                    "instanceName": this.instanceName
+                })
+            }
         }
     }  
+
+    export class CharLCDScreen{
+        options: jacdac.ServerOptions = {};
+        instanceName: string;
+
+        constructor(instanceName: string, options?: jacdac.ServerOptions){
+            this.instanceName = instanceName;
+            if(options){
+                this.options = options;
+            }
+            this.options.instanceName = instanceName;
+            this.options.variant= jacdac.CharacterScreenVariant.LCD;
+        }
+
+        public setInstanceName(instanceName: string) {
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+
+        public startServer(){
+            if(this.options){
+                return new CharacterScreenServer(12, 80, 4, 20, this.options);
+            }else{
+                return new CharacterScreenServer(12, 80, 4, 20, ({"instanceName": this.instanceName, variant: jacdac.CharacterScreenVariant.LCD}))
+            }
+        }
+
+    }
 }
