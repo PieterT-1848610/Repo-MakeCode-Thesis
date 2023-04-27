@@ -122,6 +122,7 @@ namespace ServiceImpl{
             }
             this.options.instanceName = instanceName;
             this.options.variant = jacdac.RelayVariant.Electromechanical;
+            this.options.intensityPackFormat= jacdac.RelayRegPack.Active;
         }
 
         public setInputPin(pin:DigitalPin){
