@@ -110,7 +110,7 @@ namespace ServiceImpl{
 
     }
 
-    export class relayService{
+    export class RelayService{
         options: jacdac.ServerOptions = {};
         instanceName: string = "";
         inputPin: DigitalPin;
@@ -143,4 +143,6 @@ namespace ServiceImpl{
         }
 
     }
+
+    
 }
