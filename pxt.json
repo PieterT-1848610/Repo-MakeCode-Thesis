@@ -12,6 +12,7 @@
         "jacdac-led": "github:microsoft/pxt-jacdac/led#v1.8.13",
         "jacdac-led-server": "github:microsoft/pxt-jacdac/led-server#v1.8.13",
         "jacdac-character-screen": "github:microsoft/pxt-jacdac/character-screen",
+        "jacdac-light-level": "github:microsoft/pxt-jacdac/light-level#v1.8.13",
         "jacdac-relay": "github:microsoft/pxt-jacdac/relay#v1.8.13"
     },
     "files": [
