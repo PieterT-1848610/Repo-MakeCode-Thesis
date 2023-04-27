@@ -109,4 +109,38 @@ namespace ServiceImpl{
         }
 
     }
+
+    export class relayService{
+        options: jacdac.ServerOptions = {};
+        instanceName: string = "";
+        inputPin: DigitalPin;
+
+        constructor(inputPin: DigitalPin,instanceName: string ,options?: jacdac.ServerOptions){
+            this.inputPin = inputPin;
+            if(options){
+                this.options = options;
+            }
+            this.options.instanceName = instanceName;
+            this.options.variant = jacdac.RelayVariant.Electromechanical;
+            this.options.intensityPackFormat= jacdac.RelayRegPack.Active;
+        }
+
+        public setInputPin(pin:DigitalPin){
+            this.inputPin = pin;
+        }
+
+
+        public setInstanceName(instanceName: string){
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+        public startServer(){
+            return jacdac.createActuatorServer(jacdac.SRV_RELAY, server =>{
+                const active = server.intensity > 0 ? 1 : 0
+                pins.digitalWritePin(this.inputPin, active);},
+                this.options);
+        }
+
+    }
 }

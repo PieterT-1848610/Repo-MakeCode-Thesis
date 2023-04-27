@@ -11,7 +11,8 @@
         "jacdac-distance": "github:microsoft/pxt-jacdac/distance#v1.8.13",
         "jacdac-led": "github:microsoft/pxt-jacdac/led#v1.8.13",
         "jacdac-led-server": "github:microsoft/pxt-jacdac/led-server#v1.8.13",
-        "jacdac-character-screen": "github:microsoft/pxt-jacdac/character-screen"
+        "jacdac-character-screen": "github:microsoft/pxt-jacdac/character-screen",
+        "jacdac-relay": "github:microsoft/pxt-jacdac/relay#v1.8.13"
     },
     "files": [
         "main.ts",
