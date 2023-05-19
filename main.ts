@@ -1,10 +1,10 @@
 namespace ServiceImpl{
-    export class DepthServer {
+    export class DepthService {
         private serviceClass = jacdac.SRV_DISTANCE;
         private packFormat = jacdac.DistanceRegPack.Distance;
-        instanceName: string
-        options: jacdac.SimpleSensorServerOptions = {};
-        inputFunc: () => number;
+        private instanceName: string
+        private options: jacdac.SimpleSensorServerOptions = {};
+        private inputFunc: () => number;
 
         constructor(inputFunc: () => number, instanceName: string, options ?: jacdac.SimpleSensorServerOptions) {
             this.inputFunc = inputFunc;
@@ -46,10 +46,10 @@ namespace ServiceImpl{
         }
     } 
 
-    export class RGBServer{
-        options: jacdac.LedServerOptions = {};
-        rgbDevice: LedRGB;
-        instanceName: string;
+    export class RGBService {
+        private options: jacdac.LedServerOptions = {};
+        private rgbDevice: LedRGB;
+        private instanceName: string;
 
         constructor(redPin: AnalogPin, greenPin: AnalogPin, bluePin: AnalogPin, instanceName: string ,options?: jacdac.LedServerOptions){
             this.rgbDevice = new LedRGB(redPin, greenPin, bluePin);
@@ -81,9 +81,9 @@ namespace ServiceImpl{
         }
     }  
 
-    export class CharLCDScreen{
-        options: jacdac.ServerOptions = {};
-        instanceName: string;
+    export class LcdScreenService {
+        private options: jacdac.ServerOptions = {};
+        private instanceName: string;
 
         constructor(instanceName: string, options?: jacdac.ServerOptions){
             this.instanceName = instanceName;
@@ -110,10 +110,10 @@ namespace ServiceImpl{
 
     }
 
-    export class RelayService{
-        options: jacdac.ServerOptions = {};
-        instanceName: string = "";
-        inputPin: DigitalPin;
+    export class RelayService {
+        private options: jacdac.ServerOptions = {};
+        private instanceName: string = "";
+        private inputPin: DigitalPin;
 
         constructor(inputPin: DigitalPin,instanceName: string ,options?: jacdac.ServerOptions){
             this.inputPin = inputPin;
@@ -144,5 +144,51 @@ namespace ServiceImpl{
 
     }
 
-    
+    export class LightLevelService {
+        private serviceClass = jacdac.SRV_LIGHT_LEVEL;
+        private packFormat = jacdac.LightLevelRegPack.LightLevel;
+        private options: jacdac.SimpleSensorServerOptions = {};
+        private inputFunc: () => number;
+        private instanceName: string = "";
+
+        constructor(inputFunc: () => number, instanceName: string, options?: jacdac.SimpleSensorServerOptions) {
+            this.inputFunc = inputFunc;
+            if (options) {
+                this.options = options;
+            }
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+        public setOptions(options: jacdac.SimpleSensorServerOptions) {
+            this.options = options;
+        }
+
+        public setMinRange(minReading: number) {
+            this.options.minReading = minReading;
+        }
+
+        public setMaxRange(maxReading: number) {
+            this.options.minReading = maxReading;
+        }
+
+        public setInputFunc(inputFunc: () => number) {
+            this.inputFunc = inputFunc;
+        }
+
+        public setInstanceName(instanceName: string) {
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+        public startServer(): jacdac.SimpleSensorServer {
+            this.options.instanceName = this.instanceName;
+            return new jacdac.SimpleSensorServer(
+                this.serviceClass,
+                this.packFormat,
+                this.inputFunc,
+                this.options
+            );
+        }
+    }
 }
