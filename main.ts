@@ -6,13 +6,18 @@ namespace ServiceImpl{
         private options: jacdac.SimpleSensorServerOptions = {};
         private inputFunc: () => number;
 
-        constructor(inputFunc: () => number, instanceName: string, options ?: jacdac.SimpleSensorServerOptions) {
+        constructor(inputFunc: () => number, instanceName: string, startService: boolean ,options ?: jacdac.SimpleSensorServerOptions) {
             this.inputFunc = inputFunc;
             this.instanceName = instanceName
             if (options) {
                 this.options = options;
             }
             this.options.instanceName = instanceName;
+
+            if(startService){
+                this.run();
+            }
+            
         }
 
         public setOptions(options: jacdac.SimpleSensorServerOptions) {
@@ -58,14 +63,17 @@ namespace ServiceImpl{
         private rgbDevice: LedRGB;
         private instanceName: string;
 
-        constructor(redPin: AnalogPin, greenPin: AnalogPin, bluePin: AnalogPin, instanceName: string ,options?: jacdac.LedServerOptions){
+        constructor(redPin: AnalogPin, greenPin: AnalogPin, bluePin: AnalogPin, instanceName: string, startService: boolean ,options?: jacdac.LedServerOptions){
             this.rgbDevice = new LedRGB(redPin, greenPin, bluePin);
             this.instanceName = instanceName;
             if(options){
                 this.options = options;
             }
             this.options.instanceName = instanceName;
-            this.run();
+            
+            if (startService) {
+                this.run();
+            }
         }
 
         public setInstanceName(instanceName: string) {
@@ -100,14 +108,17 @@ namespace ServiceImpl{
         private options: jacdac.ServerOptions = {};
         private instanceName: string;
 
-        constructor(instanceName: string, options?: jacdac.ServerOptions){
+        constructor(instanceName: string, startService:boolean, options?: jacdac.ServerOptions){
             this.instanceName = instanceName;
             if(options){
                 this.options = options;
             }
             this.options.instanceName = instanceName;
             this.options.variant= jacdac.CharacterScreenVariant.LCD;
-            this.run();
+            
+            if (startService) {
+                this.run();
+            }
 
         }
 
@@ -139,7 +150,7 @@ namespace ServiceImpl{
         private instanceName: string = "";
         private inputPin: DigitalPin;
 
-        constructor(inputPin: DigitalPin,instanceName: string ,options?: jacdac.ServerOptions){
+        constructor(inputPin: DigitalPin,instanceName: string, startService: boolean, options?: jacdac.ServerOptions){
             this.inputPin = inputPin;
             if(options){
                 this.options = options;
@@ -147,6 +158,10 @@ namespace ServiceImpl{
             this.options.instanceName = instanceName;
             this.options.variant = jacdac.RelayVariant.Electromechanical;
             this.options.intensityPackFormat= jacdac.RelayRegPack.Active;
+
+            if (startService) {
+                this.run();
+            }
         }
 
         public setInputPin(pin:DigitalPin){
@@ -182,13 +197,17 @@ namespace ServiceImpl{
         private inputFunc: () => number;
         private instanceName: string = "";
 
-        constructor(inputFunc: () => number, instanceName: string, options?: jacdac.SimpleSensorServerOptions) {
+        constructor(inputFunc: () => number, instanceName: string, startService:boolean, options?: jacdac.SimpleSensorServerOptions) {
             this.inputFunc = inputFunc;
             if (options) {
                 this.options = options;
             }
             this.instanceName = instanceName;
             this.options.instanceName = instanceName;
+
+            if (startService) {
+                this.run();
+            }
         }
 
         public setOptions(options: jacdac.SimpleSensorServerOptions) {
