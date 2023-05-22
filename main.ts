@@ -65,6 +65,7 @@ namespace ServiceImpl{
                 this.options = options;
             }
             this.options.instanceName = instanceName;
+            this.run();
         }
 
         public setInstanceName(instanceName: string) {
@@ -106,6 +107,8 @@ namespace ServiceImpl{
             }
             this.options.instanceName = instanceName;
             this.options.variant= jacdac.CharacterScreenVariant.LCD;
+            this.run();
+
         }
 
         public setInstanceName(instanceName: string) {
