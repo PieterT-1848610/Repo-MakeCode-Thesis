@@ -44,6 +44,13 @@ namespace ServiceImpl{
                 this.options
             );
         }
+
+        public run(){
+            jacdac.startSelfServers(() =>[
+                this.startServer(),
+            ]
+            )
+        }
     } 
 
     export class RGBService {
@@ -79,6 +86,13 @@ namespace ServiceImpl{
                 })
             }
         }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
+        }
     }  
 
     export class LcdScreenService {
@@ -106,6 +120,13 @@ namespace ServiceImpl{
             }else{
                 return new CharacterScreenServer(12, 80, 4, 20, ({"instanceName": this.instanceName, variant: jacdac.CharacterScreenVariant.LCD}))
             }
+        }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
         }
 
     }
@@ -140,6 +161,13 @@ namespace ServiceImpl{
                 const active = server.intensity > 0 ? 1 : 0
                 pins.digitalWritePin(this.inputPin, active);},
                 this.options);
+        }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
         }
 
     }
@@ -189,6 +217,13 @@ namespace ServiceImpl{
                 this.inputFunc,
                 this.options
             );
+        }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
         }
     }
 }
