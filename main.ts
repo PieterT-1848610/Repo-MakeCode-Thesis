@@ -107,9 +107,11 @@ namespace ServiceImpl{
     export class LcdScreenService {
         private options: jacdac.ServerOptions = {};
         private instanceName: string;
+        private screeenSize: number;
 
-        constructor(instanceName: string, startService:boolean, options?: jacdac.ServerOptions){
+        constructor(instanceName: string, screenSize: number, startService:boolean, options?: jacdac.ServerOptions){
             this.instanceName = instanceName;
+            this.screeenSize = screenSize;
             if(options){
                 this.options = options;
             }
@@ -129,11 +131,12 @@ namespace ServiceImpl{
 
 
         public startServer(){
-            if(this.options){
+            if(this.screeenSize == 80){
                 return new CharacterScreenServer(12, 80, 4, 20, this.options);
             }else{
-                return new CharacterScreenServer(12, 80, 4, 20, ({"instanceName": this.instanceName, variant: jacdac.CharacterScreenVariant.LCD}))
+                return new CharacterScreenServer(12, 32, 2, 16, this.options);
             }
+            
         }
 
         public run() {
