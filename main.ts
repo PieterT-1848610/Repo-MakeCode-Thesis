@@ -158,8 +158,11 @@ namespace ServiceImpl{
             if(options){
                 this.options = options;
             }
+            this.instanceName = instanceName;
             this.options.instanceName = instanceName;
-            this.options.variant = jacdac.RelayVariant.Electromechanical;
+            if(!this.options.variant){
+                this.options.variant = jacdac.RelayVariant.Electromechanical;
+            }
             this.options.intensityPackFormat= jacdac.RelayRegPack.Active;
 
             if (startService) {
