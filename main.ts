@@ -1,14 +1,51 @@
 namespace ServiceImpl{
-    export class DepthService {
+    class BasicServiceClass {
+        private instanceName: string;
+        private startService: boolean;
+        private options: jacdac.ServerOptions = {};
+
+        constructor(instanceName: string, startService:boolean, options?: jacdac.ServerOptions){
+            this.instanceName = instanceName;
+            this.startService = startService;
+            if (options) {
+                this.options = options;
+            }
+            this.options.instanceName = instanceName;
+
+            if (startService) {
+                this.run();
+            }
+        }
+
+        setInstanceName(instanceName:string){
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+        public startServer(): jacdac.Server{
+            return null;
+        }
+
+        public setOptions(options: jacdac.ServerOptions) {
+            this.options = options;
+        }
+        public run(){
+            jacdac.startSelfServers(() =>[
+                this.startServer(),
+            ])
+        }
+    }
+
+    export class DepthService{
         private serviceClass = jacdac.SRV_DISTANCE;
         private packFormat = jacdac.DistanceRegPack.Distance;
-        private instanceName: string
         private options: jacdac.SimpleSensorServerOptions = {};
         private inputFunc: () => number;
+        private instanceName:string;
 
         constructor(inputFunc: () => number, instanceName: string, startService: boolean ,options ?: jacdac.SimpleSensorServerOptions) {
             this.inputFunc = inputFunc;
-            this.instanceName = instanceName
+            this.instanceName = instanceName;
             if (options) {
                 this.options = options;
             }
@@ -77,7 +114,7 @@ namespace ServiceImpl{
         }
 
         public setInstanceName(instanceName: string) {
-            this.instanceName = instanceName;
+            this.instanceName =(instanceName);
             this.options.instanceName = instanceName;
 
         }
