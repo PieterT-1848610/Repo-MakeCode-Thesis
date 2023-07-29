@@ -141,6 +141,52 @@ namespace ServiceImpl{
         }
     }  
 
+    export class ScreenService {
+        private options: jacdac.ServerOptions = {};
+        private instanceName: string;
+        private screenSize: number;
+        private rowSize: number;
+        private clearFunction:()  => void;
+        private writeFunction: (msg: string, startPos: number, direction: jacdac.CharacterScreenTextDirection) => void;
+
+        constructor(instanceName: string, screenSize: number, clearFunc:()=>void, writeFunc:(msg: string, startPos:number, direction: jacdac.CharacterScreenTextDirection) =>void ,startService: boolean,options?: jacdac.ServerOptions) {
+            this.instanceName = instanceName;
+            this.screenSize = screenSize;
+            this.clearFunction = clearFunc;
+            this.writeFunction = writeFunc;
+            if (options) {
+                this.options = options;
+            }
+            this.options.instanceName = instanceName;
+            this.options.variant = jacdac.CharacterScreenVariant.LCD;
+
+            if (startService) {
+                this.run();
+            }
+
+        }
+
+        public setInstanceName(instanceName: string) {
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+
+        public startServer() {
+            const tempColumSize = this.screenSize/this.rowSize;
+            return new CharScreenServer(this.screenSize, this.rowSize, tempColumSize, this.clearFunction, this.writeFunction ,this.options);
+            
+        }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
+        }
+
+    }
+
     export class LcdScreenService {
         private options: jacdac.ServerOptions = {};
         private instanceName: string;
@@ -170,6 +216,8 @@ namespace ServiceImpl{
         public startServer(){
             if(this.screeenSize == 80){
                 return new CharacterScreenServer(12, 80, 4, 20, this.options);
+            }else if(this.screeenSize == 32){
+                return new CharacterScreenServer(12, 32, 2, 16, this.options);
             }else{
                 return new CharacterScreenServer(12, 32, 2, 16, this.options);
             }

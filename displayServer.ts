@@ -65,3 +65,62 @@ class CharacterScreenServer extends jacdac.Server {
 
     }
 }
+
+class CharScreenServer extends jacdac.Server {
+    message: string = "";
+    textDirection = jacdac.CharacterScreenTextDirection.LeftToRight;
+    screenSize: number = 80;
+    rowSize: number = 4;
+    columSize: number = 20;
+    clearMsgFunc: () => void;
+    setMsgFunc: (msg: string, startPos: number, direction: jacdac.CharacterScreenTextDirection) => void;
+
+    constructor(screenSize: number = 80, rowSize: number = 4, columSize: number = 20, clearMsgFunc: () => void,
+        setMsgFunc: (msg: string, startPos: number, direction: jacdac.CharacterScreenTextDirection) => void,
+        options?: jacdac.ServerOptions) {
+
+        super(jacdac.SRV_CHARACTER_SCREEN, options);
+
+        this.clearMsgFunc = clearMsgFunc;
+        this.setMsgFunc = setMsgFunc;
+        this.screenSize = screenSize;
+        this.rowSize = rowSize;
+        this.columSize = columSize;
+    }
+
+    handlePacket(pkt: jacdac.JDPacket): void {
+        this.textDirection = this.handleRegValue(
+            pkt,
+            jacdac.CharacterScreenReg.TextDirection,
+            jacdac.CharacterScreenRegPack.TextDirection,
+            this.textDirection
+        )
+        this.handleRegFormat(pkt,
+            jacdac.CharacterScreenReg.Columns,
+            jacdac.CharacterScreenRegPack.Columns,
+            [this.columSize]) // NUMBER_OF_CHAR_PER_LINE
+        this.handleRegFormat(pkt,
+            jacdac.CharacterScreenReg.Rows,
+            jacdac.CharacterScreenRegPack.Rows,
+            [this.rowSize]) // NUMBER_OF_CHAR_PER_LINE
+
+        const oldMessage = this.message
+        this.message = this.handleRegValue(
+            pkt,
+            jacdac.CharacterScreenReg.Message,
+            jacdac.CharacterScreenRegPack.Message,
+            this.message
+        )
+        if (this.message != oldMessage) this.syncMessage()
+    }
+
+    private syncMessage() {
+        if (!this.message) {
+            this.clearMsgFunc()
+        }
+        else {
+            this.setMsgFunc(this.message, 0, this.textDirection)
+        }
+
+    }
+}

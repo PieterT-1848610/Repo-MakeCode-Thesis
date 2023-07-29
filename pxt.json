@@ -13,7 +13,8 @@
         "jacdac-led-server": "github:microsoft/pxt-jacdac/led-server#v1.8.13",
         "jacdac-character-screen": "github:microsoft/pxt-jacdac/character-screen",
         "jacdac-light-level": "github:microsoft/pxt-jacdac/light-level#v1.8.13",
-        "jacdac-relay": "github:microsoft/pxt-jacdac/relay#v1.8.13"
+        "jacdac-relay": "github:microsoft/pxt-jacdac/relay#v1.8.13",
+        "i2cLCD1602": "github:makecode-extensions/i2clcd1602#v1.5.0"
     },
     "files": [
         "main.ts",
@@ -27,7 +28,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "6.0.15",
+        "target": "6.0.17",
         "targetId": "microbit"
     },
     "supportedTargets": [
