@@ -80,7 +80,6 @@ class CharScreenServer extends jacdac.Server {
         options?: jacdac.ServerOptions) {
 
         super(jacdac.SRV_CHARACTER_SCREEN, options);
-
         this.clearMsgFunc = clearMsgFunc;
         this.setMsgFunc = setMsgFunc;
         this.screenSize = screenSize;
@@ -103,7 +102,6 @@ class CharScreenServer extends jacdac.Server {
             jacdac.CharacterScreenReg.Rows,
             jacdac.CharacterScreenRegPack.Rows,
             [this.rowSize]) // NUMBER_OF_CHAR_PER_LINE
-
         const oldMessage = this.message
         this.message = this.handleRegValue(
             pkt,
@@ -121,6 +119,5 @@ class CharScreenServer extends jacdac.Server {
         else {
             this.setMsgFunc(this.message, 0, this.textDirection)
         }
-
     }
 }

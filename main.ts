@@ -50,11 +50,25 @@ namespace ServiceImpl{
                 this.options = options;
             }
             this.options.instanceName = instanceName;
-
             if(startService){
                 this.run();
             }
-            
+        }
+
+        public startServer(): jacdac.SimpleSensorServer {
+            return new jacdac.SimpleSensorServer(
+                this.serviceClass,
+                this.packFormat,
+                this.inputFunc,
+                this.options
+            );
+        }
+
+        public run() {
+            jacdac.startSelfServers(() => [
+                this.startServer(),
+            ]
+            )
         }
 
         public setOptions(options: jacdac.SimpleSensorServerOptions) {
@@ -77,22 +91,6 @@ namespace ServiceImpl{
             this.instanceName = instanceName;
             this.options.instanceName = instanceName;
         }
-
-        public startServer(): jacdac.SimpleSensorServer {
-            return new jacdac.SimpleSensorServer(
-                this.serviceClass,
-                this.packFormat,
-                this.inputFunc,
-                this.options
-            );
-        }
-
-        public run(){
-            jacdac.startSelfServers(() =>[
-                this.startServer(),
-            ]
-            )
-        }
     } 
 
     export class RGBService {
@@ -107,30 +105,15 @@ namespace ServiceImpl{
                 this.options = options;
             }
             this.options.instanceName = instanceName;
-            
             if (startService) {
                 this.run();
             }
         }
 
-        public setInstanceName(instanceName: string) {
-            this.instanceName =(instanceName);
-            this.options.instanceName = instanceName;
-
-        }
-
         public startServer() {
-            if(this.options){
-                return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
-                    this.rgbDevice.setChange(p[0], p[1], p[2]);
-                }, this.options);
-            }else{
-                return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
-                    this.rgbDevice.setChange(p[0], p[1], p[2]);
-                }, {
-                    "instanceName": this.instanceName
-                })
-            }
+            return new jacdac.LedServer(1, jacdac.LedPixelLayout.Rgbw, (p,b) => {
+                this.rgbDevice.setChange(p[0], p[1], p[2]);
+            }, this.options);
         }
 
         public run() {
@@ -139,6 +122,13 @@ namespace ServiceImpl{
             ]
             )
         }
+
+        public setInstanceName(instanceName: string) {
+            this.instanceName = (instanceName);
+            this.options.instanceName = instanceName;
+
+        }
+
     }  
 
     export class ScreenService {
@@ -149,7 +139,9 @@ namespace ServiceImpl{
         private clearFunction:()  => void;
         private writeFunction: (msg: string, startPos: number, direction: jacdac.CharacterScreenTextDirection) => void;
 
-        constructor(instanceName: string, screenSize: number, clearFunc:()=>void, writeFunc:(msg: string, startPos:number, direction: jacdac.CharacterScreenTextDirection) =>void ,startService: boolean,options?: jacdac.ServerOptions) {
+        constructor(screenSize: number, clearFunc:()=>void, 
+                writeFunc:(msg: string, startPos:number, direction: jacdac.CharacterScreenTextDirection) =>void ,
+                instanceName: string, startService: boolean,options?: jacdac.ServerOptions) {
             this.instanceName = instanceName;
             this.screenSize = screenSize;
             this.clearFunction = clearFunc;
@@ -165,17 +157,10 @@ namespace ServiceImpl{
             }
 
         }
-
-        public setInstanceName(instanceName: string) {
-            this.instanceName = instanceName;
-            this.options.instanceName = instanceName;
-        }
-
-
         public startServer() {
-            const tempColumSize = this.screenSize/this.rowSize;
-            return new CharScreenServer(this.screenSize, this.rowSize, tempColumSize, this.clearFunction, this.writeFunction ,this.options);
-            
+            const tempColumSize = this.screenSize / this.rowSize;
+            return new CharScreenServer(this.screenSize, this.rowSize, tempColumSize, this.clearFunction, this.writeFunction, this.options);
+
         }
 
         public run() {
@@ -184,6 +169,15 @@ namespace ServiceImpl{
             ]
             )
         }
+
+
+        public setInstanceName(instanceName: string) {
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
+        }
+
+
+        
 
     }
 
@@ -249,26 +243,16 @@ namespace ServiceImpl{
                 this.options.variant = jacdac.RelayVariant.Electromechanical;
             }
             this.options.intensityPackFormat= jacdac.RelayRegPack.Active;
-
             if (startService) {
                 this.run();
             }
         }
 
-        public setInputPin(pin:DigitalPin){
-            this.inputPin = pin;
-        }
-
-
-        public setInstanceName(instanceName: string){
-            this.instanceName = instanceName;
-            this.options.instanceName = instanceName;
-        }
-
-        public startServer(){
-            return jacdac.createActuatorServer(jacdac.SRV_RELAY, server =>{
+        public startServer() {
+            return jacdac.createActuatorServer(jacdac.SRV_RELAY, server => {
                 const active = server.intensity > 0 ? 1 : 0
-                pins.digitalWritePin(this.inputPin, active);},
+                pins.digitalWritePin(this.inputPin, active);
+            },
                 this.options);
         }
 
@@ -277,6 +261,15 @@ namespace ServiceImpl{
                 this.startServer(),
             ]
             )
+        }
+
+        public setInputPin(pin:DigitalPin){
+            this.inputPin = pin;
+        }
+
+        public setInstanceName(instanceName: string){
+            this.instanceName = instanceName;
+            this.options.instanceName = instanceName;
         }
 
     }
